@@ -24,17 +24,17 @@
             <div class="card-body">
                 <h5 th:text="${title}" class="card-title my-3 text-center"></h5>
 
-                <form th:action="@{/editorials/__${action}__}" th:object="${editorial}" class="form mb-3" method="POST">
+                <form th:action="@{/authors/__${action}__}" th:object="${author}" class="form mb-3" method="POST">
 
                     <input type="text" th:field="*{id}" hidden>
 
                     <div class="mb-3">
-                        <label for="name" class="form-label">Editorial's name</label>
+                        <label for="name" class="form-label">Author's name</label>
                         <input type="text" id="name" class="form-control" th:field="*{name}">
                     </div>
                     <div class="mb-3">
-                        <label for="logo" class="form-label">Editorial's logo</label>
-                        <input type="text" id="logo" class="form-control" th:field="*{logo}">
+                        <label for="photo" class="form-label">Author's photo</label>
+                        <input type="text" id="photo" class="form-control" th:field="*{photo}">
                     </div>
                     <div class="mb-3 d-grid gap-2 mb-3">
                         <button type="submit" class="btn btn-dark text-light"

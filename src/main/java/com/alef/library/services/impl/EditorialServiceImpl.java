@@ -33,6 +33,10 @@ public class EditorialServiceImpl implements EditorialService {
             throw new ServiceError("Editorial already exist");
         }
 
+        if(!editorial.getLogo().contains("jpg") && !editorial.getLogo().contains("png")) {
+            throw new ServiceError("Invalid image");
+        }
+
         eRepository.save(editorial);
     }
 
@@ -43,6 +47,10 @@ public class EditorialServiceImpl implements EditorialService {
 
         if(editorial.getName().isBlank()) {
             throw new ServiceError("Name is mandatory");
+        }
+
+        if(!editorial.getLogo().contains("jpg") && !editorial.getLogo().contains("png")) {
+            throw new ServiceError("Invalid image");
         }
 
         editorial.setId(id);

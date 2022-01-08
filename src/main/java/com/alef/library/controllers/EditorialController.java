@@ -24,6 +24,7 @@ public class EditorialController {
         this.editorialService = editorialService;
     }
 
+    // ** Home ** //
     @GetMapping
     public ModelAndView editorialsHome(HttpServletRequest request) {
 

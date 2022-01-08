@@ -32,7 +32,10 @@ public class AuthorEntity {
     @Column(nullable = false)
     private Boolean deleted = Boolean.FALSE;
 
+    private String photo;
+
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDate creationDate;
 
     @LastModifiedDate
