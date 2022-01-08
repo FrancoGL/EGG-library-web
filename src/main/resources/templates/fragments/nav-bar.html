@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Styles -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <header class="mb-4" th:fragment="header-navbar">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Beth Books</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/books}">Books</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/authors}">Authors</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/editorials}">Editorials</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav  mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a th:href="@{/login}" th:if="${session.id == null}"
+                                class="nav-link btn btn-outline-custom-3 btn-m">Sign In</a>
+                            <a th:href="@{#}" th:if="${session.id != null}"
+                                class="nav-link btn btn-outline-custom-3 btn-m">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a th:href="@{/signup}" th:if="${session.id == null}" class="nav-link btn">Sign Up</a>
+                            <a th:href="@{/logout}" th:if="${session.id != null}" class="nav-link btn">Logout</a>
+                            <a th:href="@{/loans/__${session.id}__}" th:if="${session.id != null}"
+                                class="nav-link btn">Loans</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+</body>
+
+</html>

@@ -29,13 +29,17 @@ public class EditorialEntity {
     @Column(nullable = false)
     private String name;
 
+    private String logo;
+
     @Column(nullable = false)
     private Boolean deleted = Boolean.FALSE;
 
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDate creationDate;
 
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDate modificationDate;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
