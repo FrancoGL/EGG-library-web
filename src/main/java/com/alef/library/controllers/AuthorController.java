@@ -7,7 +7,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/authors")
@@ -20,14 +24,19 @@ public class AuthorController {
         this.aService = aService;
     }
 
-
-
     // ** Home ** //
 
     @GetMapping
-    public ModelAndView authorsHome() {
+    public ModelAndView authorsHome(HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("authors-home");
+
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if(map != null) {
+            mav.addObject("success", map.get("success"));
+            mav.addObject("error", map.get("error"));
+        }
 
         mav.addObject("authors", aService.getAllAuthors());
 
@@ -37,9 +46,15 @@ public class AuthorController {
     // ** Save ** //
 
     @GetMapping("/create")
-    public ModelAndView createAuthor(@ModelAttribute AuthorEntity author) {
+    public ModelAndView createAuthor(HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("authors-form");
+
+        Map<String, ?> map = RequestContextUtils.getInputFlashMap(request);
+
+        if (map != null) {
+            mav.addObject("error",map.get("error"));
+        }
 
         mav.addObject("author", new AuthorEntity());
         mav.addObject("title", "Add Author");
@@ -56,7 +71,8 @@ public class AuthorController {
             aService.saveAuthor(author);
             attributes.addFlashAttribute("success", "Author created");
         } catch (Exception ex) {
-            attributes.addFlashAttribute("error", ("Error " + ex.getMessage()));
+            attributes.addFlashAttribute("error", ("Error: " + ex.getMessage()));
+            return new RedirectView("/authors/create");
         }
 
         return new RedirectView("/authors");
@@ -74,7 +90,7 @@ public class AuthorController {
             mav.addObject("title", "Update Author");
             mav.addObject("action","edit");
         } catch (Exception ex) {
-            mav.addObject("error", ("Error " + ex.getMessage()));
+            mav.addObject("error", ("Error: " + ex.getMessage()));
         }
 
         return mav;
@@ -89,7 +105,7 @@ public class AuthorController {
             aService.updateAuthor(id, author);
             attributes.addFlashAttribute("success", "Author updated");
         } catch (Exception ex) {
-            attributes.addFlashAttribute("error", ("Error " + ex.getMessage()));
+            attributes.addFlashAttribute("error", ("Error: " + ex.getMessage()));
         }
 
         return new RedirectView("/authors");
@@ -104,7 +120,7 @@ public class AuthorController {
         try {
             aService.deleteAuthor(id);
         } catch (Exception ex) {
-            attributes.addFlashAttribute("error", ("Error " +  ex.getMessage()));
+            attributes.addFlashAttribute("error", ("Error: " +  ex.getMessage()));
         }
 
         return new RedirectView("/authors");

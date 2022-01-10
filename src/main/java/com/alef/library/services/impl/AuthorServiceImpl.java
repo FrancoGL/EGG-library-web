@@ -33,7 +33,7 @@ public class AuthorServiceImpl implements AuthorService {
             throw new ServiceError("Author already exist");
         }
 
-        if(!author.getPhoto().contains("jpg") || !author.getPhoto().contains("png")) {
+        if(!author.getPhoto().contains("jpg") && !author.getPhoto().contains("png")) {
             throw new ServiceError("Invalid image");
         }
 

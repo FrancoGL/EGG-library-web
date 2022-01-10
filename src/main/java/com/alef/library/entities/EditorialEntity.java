@@ -42,6 +42,7 @@ public class EditorialEntity {
     @Column(nullable = false)
     private LocalDate modificationDate;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<BookEntity> books = new ArrayList<BookEntity>();
+    @OneToMany(mappedBy = "editorial",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    private List<BookEntity> books = new ArrayList<>();
 }

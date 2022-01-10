@@ -3,6 +3,7 @@ package com.alef.library.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @Setter
 @Table(name = "book")
 @EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE book SET deleted = True WHERE id = ?")
 public class BookEntity {
 
     @Id
@@ -50,9 +52,13 @@ public class BookEntity {
     @Column(nullable = false)
     private LocalDate modificationDate;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private String image;
+
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private AuthorEntity author;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private EditorialEntity editorial;
 }

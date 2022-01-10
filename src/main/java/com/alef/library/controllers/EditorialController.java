@@ -34,6 +34,7 @@ public class EditorialController {
 
         if(map != null) {
             mav.addObject("success", map.get("success"));
+            mav.addObject("error", map.get("error"));
         }
 
         mav.addObject("editorials", editorialService.getAllEditorials());
@@ -69,7 +70,8 @@ public class EditorialController {
             editorialService.saveEditorial(editorial);
             attributes.addFlashAttribute("success","Editorial created");
         } catch (Exception ex) {
-            attributes.addFlashAttribute("error",("Error " + ex.getMessage()));
+            attributes.addFlashAttribute("error",("Error: " + ex.getMessage()));
+            return new RedirectView("/editorials/create");
         }
 
         return new RedirectView("/editorials");
@@ -87,7 +89,7 @@ public class EditorialController {
             mav.addObject("title", "Update Editorial");
             mav.addObject("action","edit");
         } catch (Exception ex) {
-            mav.addObject("error", ("Error " + ex.getMessage()));
+            mav.addObject("error", ("Error: " + ex.getMessage()));
         }
 
         return mav;
@@ -102,7 +104,7 @@ public class EditorialController {
             editorialService.updateEditorial(id, editorial);
             attributes.addFlashAttribute("success", "Editorial update");
         } catch (Exception ex) {
-            attributes.addFlashAttribute("error",("Error " + ex.getMessage()));
+            attributes.addFlashAttribute("error",("Error: " + ex.getMessage()));
         }
 
         return new RedirectView("/editorials");
@@ -117,7 +119,7 @@ public class EditorialController {
         try {
             editorialService.deleteEditorial(id);
         } catch (Exception ex) {
-            attributes.addFlashAttribute("error",("Error " + ex.getMessage()));
+            attributes.addFlashAttribute("error",("Error: " + ex.getMessage()));
         }
 
         return new RedirectView("/editorials");

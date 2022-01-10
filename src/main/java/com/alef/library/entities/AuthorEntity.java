@@ -41,6 +41,7 @@ public class AuthorEntity {
     @LastModifiedDate
     private LocalDate modificationDate;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "author",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Column(nullable = false)
     private List<BookEntity> books = new ArrayList<>();
 }
