@@ -44,10 +44,8 @@
                                 class="nav-link btn btn-outline-custom-3 btn-m">Profile</a>
                         </li>
                         <li class="nav-item">
-                            <a th:href="@{/signup}" th:if="${session.id == null}" class="nav-link btn">Sign Up</a>
+                            <a th:href="@{/sign-up}" th:if="${session.id == null}" class="nav-link btn">Sign Up</a>
                             <a th:href="@{/logout}" th:if="${session.id != null}" class="nav-link btn">Logout</a>
-                            <a th:href="@{/loans/__${session.id}__}" th:if="${session.id != null}"
-                                class="nav-link btn">Loans</a>
                         </li>
                     </ul>
                 </div>

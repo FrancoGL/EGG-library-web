@@ -1,5 +1,6 @@
 package com.alef.library.entities;
 
+import com.alef.library.security.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
@@ -35,6 +36,12 @@ public class UserEntity {
     private Integer phoneNumber;
 
     private String image;
+
+    private Role role;
+
+    private String email;
+
+    private String password;
 
     @Column(nullable = false)
     private Boolean deleted = Boolean.FALSE;
