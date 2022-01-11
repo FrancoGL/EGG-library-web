@@ -3,7 +3,6 @@ package com.alef.library.entities;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -15,10 +14,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "book")
+@Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
-@SQLDelete(sql = "UPDATE book SET deleted = True WHERE id = ?")
-public class BookEntity {
+public class UserEntity {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -26,23 +24,19 @@ public class BookEntity {
     private String id;
 
     @Column(nullable = false)
-    private Long isbn;
+    private Long dni;
 
     @Column(nullable = false)
-    private String title;
+    private String name;
 
     @Column(nullable = false)
-    private Integer publicationYear;
+    private String lastName;
+
+    private Integer phoneNumber;
+
+    private String image;
 
     @Column(nullable = false)
-    private Integer copies;
-
-    @Column(nullable = false)
-    private Integer LentCopies;
-
-    @Column(nullable = false)
-    private Integer CurrentCopies;
-
     private Boolean deleted = Boolean.FALSE;
 
     @CreatedDate
@@ -50,19 +44,8 @@ public class BookEntity {
     private LocalDate creationDate;
 
     @LastModifiedDate
-    @Column(nullable = false)
     private LocalDate modificationDate;
 
-    private String image;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private AuthorEntity author;
-
-    @ManyToOne
-    @JoinColumn(nullable = false)
-    private EditorialEntity editorial;
-
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<LoanEntity> loans;
 }

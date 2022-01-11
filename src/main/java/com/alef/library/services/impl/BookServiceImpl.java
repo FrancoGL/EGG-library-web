@@ -36,7 +36,7 @@ public class BookServiceImpl implements BookService {
     }
 
     // ** Update ** //
-    
+
     @Override
     @Transactional
     public void updateBook(String id, BookEntity book) throws ServiceError {
