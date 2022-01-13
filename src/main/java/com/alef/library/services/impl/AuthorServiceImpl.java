@@ -40,6 +40,7 @@ public class AuthorServiceImpl implements AuthorService {
         aRepository.save(author);
     }
 
+    // ** Update ** //
     @Override
     @Transactional
     public void updateAuthor(String id, AuthorEntity author) throws ServiceError {
@@ -57,6 +58,7 @@ public class AuthorServiceImpl implements AuthorService {
         aRepository.save(author);
     }
 
+    // ** Get Author By Id ** //
     @Override
     @Transactional(readOnly = true)
     public AuthorEntity getAuthorById(String id) throws ServiceError {
@@ -70,12 +72,14 @@ public class AuthorServiceImpl implements AuthorService {
         return author;
     }
 
+    // ** Get All Authors ** //
     @Override
     @Transactional(readOnly = true)
     public List<AuthorEntity> getAllAuthors() {
         return aRepository.findAll();
     }
 
+    // ** Delete ** //
     @Override
     @Transactional
     public void deleteAuthor(String id) {

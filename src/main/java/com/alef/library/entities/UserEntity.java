@@ -4,6 +4,8 @@ import com.alef.library.security.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -17,6 +19,8 @@ import java.util.List;
 @Setter
 @Table(name = "user")
 @EntityListeners(AuditingEntityListener.class)
+@SQLDelete(sql = "UPDATE user SET deleted = True WHERE id = ?")
+@Where(clause = "deleted = false")
 public class UserEntity {
 
     @Id
@@ -37,10 +41,13 @@ public class UserEntity {
 
     private String image;
 
+    @Column(nullable = false)
     private Role role;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 package com.alef.library.services.impl;
 
+import com.alef.library.entities.LoanEntity;
 import com.alef.library.entities.UserEntity;
 import com.alef.library.errors.ServiceError;
 import com.alef.library.repositories.UserRepository;
@@ -20,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService, UserDetailsService {
@@ -34,6 +36,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.encoder = encoder;
     }
 
+    // ** Create ** //
     @Override
     @Transactional
     public void createUser(UserEntity user) throws ServiceError {
@@ -51,9 +54,45 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         uRepository.save(user);
     }
 
+    // ** Update ** //
     @Override
-    public void updateUser(String id, UserEntity user) {
+    @Transactional
+    public void updateUser(String id, UserEntity user) throws ServiceError {
 
+//        validation(user);
+
+        if(user.getPassword() != null) {
+            user.setPassword(encoder.encode(user.getPassword()));
+        }
+
+        user.setId(id);
+
+        System.out.println(user.getImage());
+
+        uRepository.save(user);
+    }
+
+    // ** Get User By Id ** //
+    @Override
+    @Transactional(readOnly = true)
+    public UserEntity getUserById(String id) {
+
+        UserEntity user = uRepository.findById(id).orElse(null);
+
+        if(user == null) {
+            throw new ServiceError("User not found");
+        }
+
+        return user;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<LoanEntity> getLoans(String id) {
+
+        UserEntity user = getUserById(id);
+
+        return user.getLoans();
     }
 
     @Override
@@ -67,13 +106,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         UserEntity entity = uRepository.findUserEntityByEmail(username).
                 orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        GrantedAuthority  authority = new SimpleGrantedAuthority("ROLE__" + entity.getRole());
+        GrantedAuthority  authority = new SimpleGrantedAuthority("ROLE_" + entity.getRole());
 
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 
         HttpSession session = attributes.getRequest().getSession();
 
         session.setAttribute("id", entity.getId());
+        session.setAttribute("name", (entity.getName() + " " + entity.getLastName()));
 
         return new User(entity.getEmail(), entity.getPassword(), Collections.singletonList(authority));
     }

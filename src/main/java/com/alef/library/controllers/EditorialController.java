@@ -3,6 +3,7 @@ package com.alef.library.controllers;
 import com.alef.library.entities.EditorialEntity;
 import com.alef.library.services.EditorialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +27,7 @@ public class EditorialController {
 
     // ** Home ** //
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ModelAndView editorialsHome(HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("editorials-home");
@@ -45,6 +47,7 @@ public class EditorialController {
     // ** Create ** //
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView createEditorial(HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("editorials-form");
@@ -63,6 +66,7 @@ public class EditorialController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView createEditorial(@ModelAttribute EditorialEntity editorial,
                                         RedirectAttributes attributes) {
 
@@ -80,6 +84,7 @@ public class EditorialController {
     // ** Update ** //
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView editEditorial(@PathVariable String id) {
 
         ModelAndView mav = new ModelAndView("editorials-form");
@@ -96,6 +101,7 @@ public class EditorialController {
     }
 
     @PostMapping("/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView editEditorial(@RequestParam String id,
                                       @ModelAttribute EditorialEntity editorial,
                                       RedirectAttributes attributes) {
@@ -113,6 +119,7 @@ public class EditorialController {
     // ** Deleted ** //
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView deleteEditorial(@PathVariable String id,
                                         RedirectAttributes attributes) {
 

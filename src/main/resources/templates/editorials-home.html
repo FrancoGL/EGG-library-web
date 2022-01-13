@@ -40,7 +40,7 @@
                             <div class="d-grid gap-2 mb-2">
                                 <a href="#" class="btn btn-primary">Show books</a>
                             </div>
-                            <div class="d-flex justify-content-center">
+                            <div class="d-flex justify-content-center" sec:authorize="hasRole('ROLE_ADMIN')">
                                 <a th:href="@{/editorials/edit/__${editorial.id}__}"><i
                                         class="fas fa-edit fa-2x"></i></a>
                                 <form th:action="@{/editorials/delete/__${editorial.id}__}" method="post">

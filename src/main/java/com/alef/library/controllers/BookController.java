@@ -6,6 +6,7 @@ import com.alef.library.services.BookService;
 import com.alef.library.services.EditorialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -38,6 +39,7 @@ public class BookController {
     // ** Home ** //
 
     @GetMapping()
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ModelAndView booksHome(HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("books-home");
@@ -57,6 +59,7 @@ public class BookController {
     // ** Save ** //
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView createBook(HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("books-form");
@@ -77,6 +80,7 @@ public class BookController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView createBook(@ModelAttribute BookEntity book,
                                    RedirectAttributes attributes) {
 
@@ -93,6 +97,7 @@ public class BookController {
     // ** Update ** //
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView updateBook(@PathVariable String id) {
 
         ModelAndView mav = new ModelAndView("books-form");
@@ -111,6 +116,7 @@ public class BookController {
     }
 
     @PostMapping("/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView updateBook(@RequestParam String id,
                                    @ModelAttribute BookEntity book,
                                    RedirectAttributes attributes) {
@@ -128,6 +134,7 @@ public class BookController {
     // ** Delete ** //
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView deleteBook(@PathVariable String id,
                                    RedirectAttributes attributes) {
 

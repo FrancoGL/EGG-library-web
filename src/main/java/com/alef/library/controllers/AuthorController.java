@@ -3,6 +3,7 @@ package com.alef.library.controllers;
 import com.alef.library.entities.AuthorEntity;
 import com.alef.library.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -27,6 +28,7 @@ public class AuthorController {
     // ** Home ** //
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     public ModelAndView authorsHome(HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("authors-home");
@@ -46,6 +48,7 @@ public class AuthorController {
     // ** Save ** //
 
     @GetMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView createAuthor(HttpServletRequest request) {
 
         ModelAndView mav = new ModelAndView("authors-form");
@@ -64,6 +67,7 @@ public class AuthorController {
     }
 
     @PostMapping("/create")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView createEditorial(@ModelAttribute AuthorEntity author,
                                         RedirectAttributes attributes) {
 
@@ -81,6 +85,7 @@ public class AuthorController {
     // ** Update ** //
 
     @GetMapping("/edit/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView editAuthor(@PathVariable String id) {
 
         ModelAndView mav = new ModelAndView("authors-form");
@@ -97,6 +102,7 @@ public class AuthorController {
     }
 
     @PostMapping("/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView editAuthor(@RequestParam String id,
                                    @ModelAttribute AuthorEntity author,
                                    RedirectAttributes attributes) {
@@ -114,6 +120,7 @@ public class AuthorController {
     // ** Delete ** //
 
     @PostMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public RedirectView deleteAuthor(@PathVariable String id,
                                      RedirectAttributes attributes) {
 
