@@ -43,6 +43,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         validation(user);
 
+        if(uRepository.existsUserEntityByName(user.getName())) {
+            throw new ServiceError("User already exist");
+        }
+
         if(!uRepository.existsUserEntityByRole(Role.ADMIN)) {
             user.setRole(Role.ADMIN);
         } else {
@@ -59,23 +63,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     public void updateUser(String id, UserEntity user) throws ServiceError {
 
-//        validation(user);
+        validation(user);
 
         if(user.getPassword() != null) {
             user.setPassword(encoder.encode(user.getPassword()));
         }
 
-        user.setId(id);
+        UserEntity user1 = getUserById(id);
 
-        System.out.println(user.getImage());
+        user1.setImage(user.getImage());
+        user1.setPassword(user.getPassword());
+        user1.setName(user.getName());
+        user1.setLastName(user.getLastName());
 
-        uRepository.save(user);
+        uRepository.save(user1);
     }
 
     // ** Get User By Id ** //
     @Override
     @Transactional(readOnly = true)
-    public UserEntity getUserById(String id) {
+    public UserEntity getUserById(String id) throws ServiceError {
 
         UserEntity user = uRepository.findById(id).orElse(null);
 
@@ -96,8 +103,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(String id) {
 
+        UserEntity user = uRepository.findById(id).orElse(null);
+
+        if(user == null) {
+            throw new ServiceError("User not found");
+        }
+
+        uRepository.deleteById(id);
     }
 
     @Override
@@ -114,15 +129,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         session.setAttribute("id", entity.getId());
         session.setAttribute("name", (entity.getName() + " " + entity.getLastName()));
+        session.setAttribute("image", entity.getImage());
 
         return new User(entity.getEmail(), entity.getPassword(), Collections.singletonList(authority));
     }
 
     private void validation(UserEntity user) {
-
-        if(uRepository.existsUserEntityByName(user.getName())) {
-            throw new ServiceError("User already exist");
-        }
 
         if(user.getDni().toString().length() < 8) {
             throw new ServiceError("Invalid DNI");

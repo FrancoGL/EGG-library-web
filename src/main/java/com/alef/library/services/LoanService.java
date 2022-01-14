@@ -10,5 +10,7 @@ public interface LoanService {
 
     void updateLoan(String id);
 
+    LoanEntity getLoanById(String id);
+
     void deleteLoan(String id);
 }

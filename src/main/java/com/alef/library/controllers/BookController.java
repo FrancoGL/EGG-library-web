@@ -104,7 +104,7 @@ public class BookController {
 
         try {
             mav.addObject("book", bookService.getBookById(id));
-            mav.addObject("title","Update Author");
+            mav.addObject("title","Update Books");
             mav.addObject("authors", authorService.getAllAuthors());
             mav.addObject("editorials", editorialService.getAllEditorials());
             mav.addObject("action","edit");

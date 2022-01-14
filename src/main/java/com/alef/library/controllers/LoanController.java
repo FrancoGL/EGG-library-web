@@ -32,6 +32,8 @@ public class LoanController {
         this.userService = userService;
     }
 
+    // ** Create ** //
+
     @GetMapping("/create/{id}")
     public ModelAndView confirmPage(@PathVariable String id) {
 
@@ -75,5 +77,17 @@ public class LoanController {
         }
 
         return new RedirectView("/profiles");
+    }
+
+    // ** Details ** //
+    @GetMapping("/details/{id}")
+    public ModelAndView getDetails(@PathVariable String id) {
+
+        ModelAndView mav = new ModelAndView("loans-details");
+
+        mav.addObject("loan", loanService.getLoanById(id));
+        mav.addObject("title","Details");
+
+        return mav;
     }
 }

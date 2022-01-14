@@ -29,6 +29,8 @@ public class LoanServiceImpl implements LoanService {
         this.bookService = bookService;
     }
 
+    // ** Create ** //
+
     @Override
     @Transactional
     public void createLoan(String id, HttpSession session) throws ServiceError {
@@ -43,6 +45,8 @@ public class LoanServiceImpl implements LoanService {
             throw new ServiceError(ex.getMessage());
         }
     }
+
+    // ** Update ** //
 
     @Override
     @Transactional
@@ -61,6 +65,8 @@ public class LoanServiceImpl implements LoanService {
         deleteLoan(id);
     }
 
+    // ** Delete ** //
+
     @Override
     @Transactional
     public void deleteLoan(String id) throws ServiceError {
@@ -72,6 +78,20 @@ public class LoanServiceImpl implements LoanService {
         }
 
         lRepository.deleteById(id);
+    }
+
+    // ** Get By Id ** //
+
+    @Override
+    public LoanEntity getLoanById(String id) {
+
+        LoanEntity loan = lRepository.findById(id).orElse(null);
+
+        if(loan == null) {
+            throw new ServiceError("Loan not found");
+        }
+
+        return loan;
     }
 
     private void validation(LoanEntity loan) {
